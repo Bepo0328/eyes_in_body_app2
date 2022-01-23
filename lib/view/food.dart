@@ -2,7 +2,6 @@ import 'package:eyes_in_body_app2/data/data.dart';
 import 'package:eyes_in_body_app2/data/database.dart';
 import 'package:eyes_in_body_app2/style.dart';
 import 'package:eyes_in_body_app2/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
 
@@ -20,7 +19,7 @@ class _FoodAddPageState extends State<FoodAddPage> {
 
   @override
   void initState() {
-    memoController.text = food.memo!;
+    memoController.text = food.memo;
     super.initState();
   }
 
@@ -60,7 +59,7 @@ class _FoodAddPageState extends State<FoodAddPage> {
                   child: AspectRatio(
                     aspectRatio: 1 / 1,
                     child: Align(
-                      child: food.image!.isEmpty
+                      child: food.image.isEmpty
                           ? Image.asset('assets/img/food.png')
                           : AssetThumb(
                               asset: Asset(food.image, 'food.png', 0, 0),
@@ -263,7 +262,7 @@ class _FoodAddPageState extends State<FoodAddPage> {
     }
 
     setState(() {
-      food.image = _img.first.identifier;
+      food.image = _img.first.identifier!;
     });
   }
 }

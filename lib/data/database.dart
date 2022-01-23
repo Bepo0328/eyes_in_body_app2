@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 
 class DatabaseHelper {
   static const _databaseName = 'dietapp.db';
-  static const int _databaseVersion = 1;
+  static const int _databaseVersion = 2;
   static const foodTable = 'food';
   static const workoutTable = 'workout';
   static const eyeBodyTable = 'eyeBody';
@@ -54,7 +54,9 @@ class DatabaseHelper {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       date INTEGER DEFAULT 0,
       time INTEGER DEFAULT 0,
-      calorie INTEGER DEFAULT 0,
+      type INTEGER DEFAULT 0,
+      distance INTEGER DEFAULT 0,
+      kcal INTEGER DEFAULT 0,
       intense INTEGER DEFAULT 0,
       part INTEGER DEFAULT 0,
       name String,
@@ -81,7 +83,14 @@ class DatabaseHelper {
     ''');
   }
 
-  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {}
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (newVersion == 2) {
+      await db.execute('''
+      ALTER TABLE $workoutTable
+      ADD distance INTEGER DEFAULT 0
+      ''');
+    }
+  }
 
   // 데이터 추가, 변경, 검색, 삭제
 
@@ -220,7 +229,7 @@ class DatabaseHelper {
   Future<int> insertWeight(Weight weight) async {
     Database? db = await instance.database;
 
-    List<Weight> _d = await queryWeightByDate(weight.date!);
+    List<Weight> _d = await queryWeightByDate(weight.date);
 
     if (_d.isEmpty) {
       // 생성

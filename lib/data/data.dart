@@ -1,22 +1,22 @@
 class Food {
   int? id;
-  int? date;
-  int? type;
-  int? meal;
-  int? kcal;
-  int? time;
-  String? memo;
-  String? image;
+  int date;
+  int type;
+  int meal;
+  int kcal;
+  int time;
+  String memo;
+  String image;
 
   Food({
     this.id,
-    this.date,
-    this.type,
-    this.meal,
-    this.kcal,
-    this.time,
-    this.memo,
-    this.image,
+    required this.date,
+    required this.type,
+    required this.meal,
+    required this.kcal,
+    required this.time,
+    required this.memo,
+    required this.image,
   });
 
   factory Food.fromDB(Map<String, dynamic> data) {
@@ -48,23 +48,27 @@ class Food {
 
 class Workout {
   int? id;
-  int? date;
-  int? time;
-  int? calorie;
-  int? intense;
-  int? part;
-  String? name;
-  String? memo;
+  int date;
+  int time;
+  int type;
+  int distance;
+  int kcal;
+  int intense;
+  int part;
+  String name;
+  String memo;
 
   Workout({
     this.id,
-    this.date,
-    this.time,
-    this.calorie,
-    this.intense,
-    this.part,
-    this.name,
-    this.memo,
+    required this.date,
+    required this.time,
+    required this.type,
+    required this.distance,
+    required this.kcal,
+    required this.intense,
+    required this.part,
+    required this.name,
+    required this.memo,
   });
 
   factory Workout.fromDB(Map<String, dynamic> data) {
@@ -72,7 +76,9 @@ class Workout {
       id: data['id'],
       date: data['date'],
       time: data['time'],
-      calorie: data['calorie'],
+      type: data['type'],
+      distance: data['distance'],
+      kcal: data['kcal'],
       intense: data['intense'],
       part: data['part'],
       name: data['name'],
@@ -85,7 +91,9 @@ class Workout {
       'id': id,
       'date': date,
       'time': time,
-      'calorie': calorie,
+      'type': type,
+      'distance': distance,
+      'calorie': kcal,
       'intense': intense,
       'part': part,
       'name': name,
@@ -96,15 +104,15 @@ class Workout {
 
 class EyeBody {
   int? id;
-  int? date;
-  String? image;
-  String? memo;
+  int date;
+  String image;
+  String memo;
 
   EyeBody({
     this.id,
-    this.date,
-    this.image,
-    this.memo,
+    required this.date,
+    required this.image,
+    required this.memo,
   });
 
   factory EyeBody.fromDB(Map<String, dynamic> data) {
@@ -127,16 +135,16 @@ class EyeBody {
 }
 
 class Weight {
-  int? date;
-  int? weight;
-  int? fat;
-  int? muscle;
+  int date;
+  int weight;
+  int fat;
+  int muscle;
 
   Weight({
-    this.date,
-    this.weight,
-    this.fat,
-    this.muscle,
+    required this.date,
+    required this.weight,
+    required this.fat,
+    required this.muscle,
   });
 
   factory Weight.fromDB(Map<String, dynamic> data) {

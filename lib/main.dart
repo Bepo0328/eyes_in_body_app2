@@ -1,8 +1,11 @@
 import 'package:eyes_in_body_app2/data/data.dart';
 import 'package:eyes_in_body_app2/utils.dart';
+import 'package:eyes_in_body_app2/view/body.dart';
 import 'package:eyes_in_body_app2/view/food.dart';
+import 'package:eyes_in_body_app2/view/workout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'style.dart';
 
 void main() {
@@ -77,7 +80,26 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: const Text('식단'),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => WorkoutAddPage(
+                              workout: Workout(
+                                date: Utils.getFormTime(DateTime.now()),
+                                time: 60,
+                                type: 0,
+                                distance: 0,
+                                kcal: 0,
+                                intense: 0,
+                                part: 0,
+                                name: '',
+                                memo: '',
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       child: const Text('운동'),
                     ),
                     TextButton(
@@ -85,7 +107,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: const Text('몸무게'),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => EyeBodyAddPage(
+                              eyeBody: EyeBody(
+                                date: Utils.getFormTime(DateTime.now()),
+                                image: '',
+                                memo: '',
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                       child: const Text('눈바디'),
                     ),
                   ],
