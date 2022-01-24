@@ -266,3 +266,84 @@ class _FoodAddPageState extends State<FoodAddPage> {
     });
   }
 }
+
+class MainFoodCard extends StatelessWidget {
+  const MainFoodCard({Key? key, required this.food}) : super(key: key);
+  final Food food;
+
+  @override
+  Widget build(BuildContext context) {
+    String _t = food.time.toString();
+    String _m = '';
+    String _h = '';
+
+    if (_t.length < 3) {
+      _m = _t.substring(0);
+      _h = '0';
+    } else {
+      _m = _t.substring(_t.length - 2);
+      _h = _t.substring(0, _t.length - 2);
+    }
+
+    TimeOfDay time = TimeOfDay(hour: int.parse(_h), minute: int.parse(_m));
+
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12.0),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: AssetThumb(
+                  asset: Asset(food.image, 'food.png', 0, 0),
+                  width: cardSize.toInt(),
+                  height: cardSize.toInt(),
+                ),
+              ),
+              Positioned.fill(
+                child: Container(
+                  color: Colors.black38,
+                ),
+              ),
+              Positioned(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${time.hour > 11 ? '오후' : '오전'} '
+                    '${Utils.makeTwoDigit(time.hour % 12)}:'
+                    '${Utils.makeTwoDigit(time.minute)}',
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 6,
+                bottom: 6,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0,
+                    vertical: 4.0,
+                  ),
+                  child: Text(
+                    mealTime[food.meal],
+                    style: const TextStyle(color: Colors.white, fontSize: 14.0,),
+                  ),
+                  decoration: BoxDecoration(
+                    color: mainColor,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

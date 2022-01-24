@@ -93,7 +93,7 @@ class Workout {
       'time': time,
       'type': type,
       'distance': distance,
-      'calorie': kcal,
+      'kcal': kcal,
       'intense': intense,
       'part': part,
       'name': name,

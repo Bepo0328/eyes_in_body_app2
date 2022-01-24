@@ -1,4 +1,5 @@
 import 'package:eyes_in_body_app2/data/data.dart';
+import 'package:eyes_in_body_app2/data/database.dart';
 import 'package:eyes_in_body_app2/utils.dart';
 import 'package:eyes_in_body_app2/view/body.dart';
 import 'package:eyes_in_body_app2/view/food.dart';
@@ -41,7 +42,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final dbHelper = DatabaseHelper.instance;
+
   int currentIndex = 0;
+  DateTime dateTime = DateTime.now();
+
+  List<Food> foods = [];
+  List<Workout> workouts = [];
+  List<EyeBody> eyeBodies = [];
+  List<Weight> weights = [];
+
+  void getHistories() async {
+    int _d = Utils.getFormTime(dateTime);
+
+    foods = await dbHelper.queryFoodByDate(_d);
+    workouts = await dbHelper.queryWorkoutByDate(_d);
+    eyeBodies = await dbHelper.queryEyeBodyByDate(_d);
+    weights = await dbHelper.queryWeightByDate(_d);
+
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getHistories();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         );
+                        getHistories();
                       },
                       child: const Text('식단'),
                     ),
@@ -99,6 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         );
+                        getHistories();
                       },
                       child: const Text('운동'),
                     ),
@@ -120,6 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         );
+                        getHistories();
                       },
                       child: const Text('눈바디'),
                     ),
@@ -173,47 +202,65 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Column(
         children: [
           Container(
-            height: cardSize + 20,
-            child: ListView.builder(
+            height: cardSize,
+            child: foods.isEmpty
+                ? Image.asset('assets/img/food.png')
+                : ListView.builder(
+                    itemBuilder: (ctx, idx) {
+                      return Container(
+                        height: cardSize,
+                        width: cardSize,
+                        child: MainFoodCard(food: foods[idx]),
+                      );
+                    },
+                    itemCount: foods.length,
+                    scrollDirection: Axis.horizontal,
+                  ),
+          ),
+          Container(
+            height: cardSize,
+            child: workouts.isEmpty
+                ? Image.asset('assets/img/workout.png')
+                : ListView.builder(
               itemBuilder: (ctx, idx) {
                 return Container(
                   height: cardSize,
                   width: cardSize,
-                  color: mainColor,
+                  child: MainWorkout(workout: workouts[idx]),
                 );
               },
-              itemCount: 3,
+              itemCount: workouts.length,
               scrollDirection: Axis.horizontal,
             ),
           ),
           Container(
-            height: cardSize + 20,
-            child: ListView.builder(
-              itemBuilder: (ctx, idx) {
-                return Container(
-                  height: cardSize,
-                  width: cardSize,
-                  color: mainColor,
-                );
-              },
-              itemCount: 3,
-              scrollDirection: Axis.horizontal,
-            ),
-          ),
-          Container(
-            height: cardSize + 20,
+            height: cardSize,
             child: ListView.builder(
               itemBuilder: (ctx, idx) {
                 if (idx == 0) {
                   // 몸무게
+                  return Container(
+                    height: cardSize,
+                    width: cardSize,
+                    color: mainColor,
+                  );
                 } else {
                   // 눈바디
+                  if (eyeBodies.isEmpty) {
+                    return Container(
+                      height: cardSize,
+                      width: cardSize,
+                      color: mainColor,
+                      child: Image.asset('assets/img/body.png')
+                    );
+                  } else {
+                    return Container(
+                      height: cardSize,
+                      width: cardSize,
+                      child: MainEyeBodyCard(eyeBody: eyeBodies[0]),
+                    );
+                  }
                 }
-                return Container(
-                  height: cardSize,
-                  width: cardSize,
-                  color: mainColor,
-                );
               },
               itemCount: 2,
               scrollDirection: Axis.horizontal,

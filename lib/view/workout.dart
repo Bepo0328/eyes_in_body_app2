@@ -354,3 +354,83 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
     );
   }
 }
+
+class MainWorkout extends StatelessWidget {
+  const MainWorkout({Key? key, required this.workout}) : super(key: key);
+  final Workout workout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.0),
+        color: bgColor,
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 4.0,
+            spreadRadius: 4.0,
+            color: Colors.black12,
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 50.0,
+                    width: 50.0,
+                    child: Image.asset('assets/img/${workout.type}.png'),
+                    decoration: BoxDecoration(
+                      color: iBgColor,
+                      borderRadius: BorderRadius.circular(70.0),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      '${Utils.makeTwoDigit(workout.time ~/ 60)}:'
+                      '${Utils.makeTwoDigit(workout.time % 60)}',
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              Expanded(
+                child: Text(
+                  workout.name,
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Text(
+                workout.kcal == 0 ? '' : '${workout.kcal}kcal',
+                style: const TextStyle(
+                  fontSize: 14.0,
+                ),
+              ),
+              Text(
+                workout.distance == 0 ? '' : '${workout.distance}km',
+                style: const TextStyle(
+                  fontSize: 12.0,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

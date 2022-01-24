@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 
 class DatabaseHelper {
   static const _databaseName = 'dietapp.db';
-  static const int _databaseVersion = 2;
+  static const int _databaseVersion = 1;
   static const foodTable = 'food';
   static const workoutTable = 'workout';
   static const eyeBodyTable = 'eyeBody';
@@ -83,15 +83,7 @@ class DatabaseHelper {
     ''');
   }
 
-  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (newVersion == 2) {
-      await db.execute('''
-      ALTER TABLE $workoutTable
-      ADD distance INTEGER DEFAULT 0
-      ''');
-    }
-  }
-
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {}
   // 데이터 추가, 변경, 검색, 삭제
 
   Future<int> insertFood(Food food) async {
