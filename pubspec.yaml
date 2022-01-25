@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,6 +36,8 @@ dependencies:
   sqflite: ^2.0.2
   multi_image_picker2: ^5.0.2
   intl: ^0.17.0
+  table_calendar: ^3.0.3
+  fl_chart: ^0.20.1
 
   flutter_localizations:
     sdk: flutter
