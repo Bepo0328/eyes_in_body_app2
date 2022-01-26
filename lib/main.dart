@@ -8,27 +8,29 @@ import 'package:eyes_in_body_app2/view/workout.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  initializeDateFormatting().then((value) => runApp(const MyApp()));
 
   tz.initializeTimeZones();
 
   const AndroidNotificationChannel androidNotificationChannel =
-      AndroidNotificationChannel('bepo', 'Diet App', description: 'Diet App');
+  AndroidNotificationChannel('bepo', 'Diet App', description: 'Diet App');
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   await flutterLocalNotificationsPlugin!
       .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(androidNotificationChannel);
+      AndroidFlutterLocalNotificationsPlugin>()!
+      .createNotificationChannel(androidNotificationChannel);
 }
 
 class MyApp extends StatelessWidget {
@@ -40,14 +42,9 @@ class MyApp extends StatelessWidget {
       title: 'Eyes InBody App',
       theme: ThemeData(
         fontFamily: 'NotoSansKR',
-        primarySwatch: Colors.blue,
+        primarySwatch: mainMColor,
       ),
       home: const MyHomePage(),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('ko', 'KR')],
     );
   }
 }
@@ -133,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
         importance: Importance.max,
         priority: Priority.max);
 
-    var iOS = IOSNotificationDetails();
+    var iOS = const IOSNotificationDetails();
 
     NotificationDetails detail = NotificationDetails(
       android: android,
@@ -144,7 +141,8 @@ class _MyHomePageState extends State<MyHomePage> {
       0,
       '오늘의 다이어트를 기록해주세요!',
       '앱을 실행해주세요!',
-      tz.TZDateTime.from(DateTime.now().add(const Duration(seconds: 10)), tz.local),
+      tz.TZDateTime.from(
+          DateTime.now().add(const Duration(seconds: 10)), tz.local),
       detail,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
@@ -157,12 +155,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0.0),
+        child: AppBar(),
+      ),
+      backgroundColor: bgColor,
       body: getPage(),
       floatingActionButton: ![0, 1].contains(currentIndex)
           ? Container()
           : FloatingActionButton(
               onPressed: () {
+                setState(() {
+                  changeToDarkMode();
+                });
+                // return;
                 showModalBottomSheet(
                   context: context,
                   backgroundColor: bgColor,
@@ -245,7 +251,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 );
               },
-              child: const Icon(Icons.add),
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
             ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (idx) {
@@ -253,6 +262,8 @@ class _MyHomePageState extends State<MyHomePage> {
             currentIndex = idx;
           });
         },
+        backgroundColor: bgColor,
+        unselectedItemColor: txtColor,
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
         items: const [
@@ -377,12 +388,16 @@ class _MyHomePageState extends State<MyHomePage> {
                             crossAxisAlignment: CrossAxisAlignment.baseline,
                             textBaseline: TextBaseline.alphabetic,
                             children: [
-                              const Text('몸무게'),
+                              Text(
+                                '몸무게',
+                                style: mTs.apply(color: txtColor),
+                              ),
                               Text(
                                 '${w.weight}kg',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
+                                  color: txtColor,
                                 ),
                               ),
                             ],
@@ -426,6 +441,7 @@ class _MyHomePageState extends State<MyHomePage> {
           if (idx == 0) {
             return Container(
               child: TableCalendar(
+                locale: 'ko-KR',
                 calendarFormat: CalendarFormat.month,
                 availableCalendarFormats: const {CalendarFormat.month: ''},
                 headerStyle: const HeaderStyle(
@@ -511,6 +527,7 @@ class _MyHomePageState extends State<MyHomePage> {
           if (idx == 0) {
             return Container(
               child: TableCalendar(
+                locale: 'ko-KR',
                 calendarFormat: CalendarFormat.week,
                 availableCalendarFormats: const {CalendarFormat.week: ''},
                 headerStyle: const HeaderStyle(
@@ -578,7 +595,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('${dateTime.month}월 ${dateTime.day}일'),
+                      Text(
+                        '${dateTime.month}월 ${dateTime.day}일',
+                        style: mTs.apply(color: txtColor),
+                      ),
                       InkWell(
                         onTap: () async {
                           Weight w;
@@ -606,7 +626,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             horizontal: 10.0,
                             vertical: 6.0,
                           ),
-                          child: const Text('저장'),
+                          child: Text(
+                            '저장',
+                            style: mTs.apply(color: txtColor),
+                          ),
                           decoration: BoxDecoration(
                             color: mainColor,
                             borderRadius: BorderRadius.circular(8.0),
@@ -622,11 +645,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            const Text('몸무게'),
+                            Text(
+                              '몸무게',
+                              style: mTs.apply(color: txtColor),
+                            ),
                             TextField(
                               controller: wCtrl,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.end,
+                              style: mTs.apply(color: txtColor),
                               decoration: InputDecoration(
                                 border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(16.0),
@@ -645,11 +672,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            const Text('골격근량'),
+                            Text(
+                              '골격근량',
+                              style: mTs.apply(color: txtColor),
+                            ),
                             TextField(
                               controller: mCtrl,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.end,
+                              style: mTs.apply(color: txtColor),
                               decoration: InputDecoration(
                                 border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(16.0),
@@ -668,11 +699,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            const Text('체지방량'),
+                            Text(
+                              '체지방량',
+                              style: mTs.apply(color: txtColor),
+                            ),
                             TextField(
                               controller: fCtrl,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.end,
+                              style: mTs.apply(color: txtColor),
                               decoration: InputDecoration(
                                 border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(16.0),
@@ -825,7 +860,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               return [
                                 LineTooltipItem(
                                   '${spots.first.y}kg',
-                                  TextStyle(color: mainColor),
+                                  mTs.apply(color: txtColor),
                                 ),
                               ];
                             },
@@ -834,6 +869,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         titlesData: FlTitlesData(
                           bottomTitles: SideTitles(
                             showTitles: true,
+                            getTextStyles: (value) {
+                              return TextStyle(color: txtColor);
+                            },
                             getTitles: (value) {
                               DateTime date = Utils.stringToDateTime(
                                   value.toInt().toString());

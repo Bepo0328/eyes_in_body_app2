@@ -71,6 +71,7 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
           ),
         ],
       ),
+      backgroundColor: bgColor,
       body: Container(
         child: ListView.builder(
           itemBuilder: (ctx, idx) {
@@ -103,6 +104,7 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                     Expanded(
                       child: TextField(
                         controller: nameController,
+                        style: mTs.apply(color: txtColor),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16.0),
@@ -128,9 +130,9 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           '운동 시간',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: mTs.apply(color: txtColor),
                         ),
                         Container(
                           width: 70.0,
@@ -138,6 +140,7 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                             controller: timeController,
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.end,
+                            style: mTs.apply(color: txtColor),
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(16.0),
@@ -154,9 +157,9 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           '소모 칼로리',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: mTs.apply(color: txtColor),
                         ),
                         Container(
                           width: 70.0,
@@ -164,6 +167,7 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                             controller: calController,
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.end,
+                            style: mTs.apply(color: txtColor),
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(16.0),
@@ -180,9 +184,9 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           '거리',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: mTs.apply(color: txtColor),
                         ),
                         Container(
                           width: 70.0,
@@ -190,6 +194,7 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                             controller: distanceController,
                             keyboardType: TextInputType.number,
                             textAlign: TextAlign.end,
+                            style: mTs.apply(color: txtColor),
                             decoration: InputDecoration(
                               border: UnderlineInputBorder(
                                 borderRadius: BorderRadius.circular(16.0),
@@ -216,10 +221,10 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           '운동 부위',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: mTs.apply(color: txtColor),
                         ),
                       ],
                     ),
@@ -270,10 +275,10 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           '운동 강도',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: mTs.apply(color: txtColor),
                         ),
                       ],
                     ),
@@ -324,9 +329,9 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       '메모',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: mTs.apply(color: txtColor),
                     ),
                     const SizedBox(height: 12.0),
                     TextField(
@@ -334,6 +339,7 @@ class _WorkoutAddPageState extends State<WorkoutAddPage> {
                       maxLines: 10,
                       minLines: 5,
                       keyboardType: TextInputType.multiline,
+                      style: mTs.apply(color: txtColor),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
@@ -397,10 +403,7 @@ class MainWorkout extends StatelessWidget {
                       '${Utils.makeTwoDigit(workout.time ~/ 60)}:'
                       '${Utils.makeTwoDigit(workout.time % 60)}',
                       textAlign: TextAlign.end,
-                      style: const TextStyle(
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: lTs.apply(color: txtColor),
                     ),
                   ),
                 ],
@@ -409,23 +412,16 @@ class MainWorkout extends StatelessWidget {
               Expanded(
                 child: Text(
                   workout.name,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: mTs.apply(color: txtColor),
                 ),
               ),
               Text(
                 workout.kcal == 0 ? '' : '${workout.kcal}kcal',
-                style: const TextStyle(
-                  fontSize: 14.0,
-                ),
+                style: sTs.apply(color: txtColor),
               ),
               Text(
                 workout.distance == 0 ? '' : '${workout.distance}km',
-                style: const TextStyle(
-                  fontSize: 12.0,
-                ),
+                style: sTs.apply(color: txtColor),
               ),
             ],
           ),
