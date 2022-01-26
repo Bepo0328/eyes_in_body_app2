@@ -38,6 +38,7 @@ dependencies:
   intl: ^0.17.0
   table_calendar: ^3.0.3
   fl_chart: ^0.20.1
+  flutter_local_notifications: ^9.2.0
 
   flutter_localizations:
     sdk: flutter
